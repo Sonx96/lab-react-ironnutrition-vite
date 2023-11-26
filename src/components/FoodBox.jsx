@@ -1,22 +1,39 @@
-import React from 'react';
+import React from "react";
+import { useEffect, useState } from "react";
+import foodsJson from "../foods.json";
 
-const FoodBox = ({ food }) => {
-  const { name, calories, image, servings } = food;
+const FoodBox = () => {
+  const [foodsToShow, setFoodsToShow] = useState([]);
+
+  useEffect(() => {
+    setFoodsToShow(foodsJson);
+  }, []);
+
+  const handleDelete = (id) => {
+    const updatedFoods = foodsToShow.filter((foods) => foods.id !== id);
+    setFoodsToShow(updatedFoods);
+  };
 
   return (
     <div>
-      <p>{name}</p>
+      {foodsToShow.map((eachFoods) => {
+        return (
+          <div key={eachFoods.id}>
+            <p>{eachFoods.name}</p>
 
-      <img src={image} alt={name} />
+            <img src={eachFoods.image} alt={eachFoods.name} width={200} />
 
-      <p>Calories: {calories}</p>
-      <p>Servings: {servings}</p>
+            <p>Calories: {eachFoods.calories}</p>
+            <p>Servings: {eachFoods.servings}</p>
 
-      <p>
-        <b>Total Calories: {servings * calories} kcal</b>
-      </p>
+            <p>
+              <b>Total Calories: {eachFoods.servings * eachFoods.calories} kcal</b>
+            </p>
 
-      <button>Delete</button>
+            <button onClick={() => handleDelete(eachFoods.id)}>Delete</button>
+          </div>
+        );
+      })}
     </div>
   );
 };

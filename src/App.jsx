@@ -6,16 +6,16 @@ import FoodBox from "./components/FoodBox";
 function App() {
   const [foods, setFoods] = useState(foodsJson);
 
+  const handleDelete = (id) => {
+    const updatedFoods = foods.filter((food) => food.id !== id);
+    setFoods(updatedFoods);
+  };
+
   return (
     <div className="App">
-      <FoodBox
-        food={{
-          name: "Orange",
-          calories: 85,
-          image: "https://i.imgur.com/abKGOcv.jpg",
-          servings: 1,
-        }}
-      />
+      {foods.map((food) => (
+        <FoodBox key={food.id} food={food} onDelete={() => handleDelete(food.id)} />
+      ))}
     </div>
   );
 }
